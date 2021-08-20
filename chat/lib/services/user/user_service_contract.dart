@@ -1,0 +1,10 @@
+import 'package:chat/models/user.dart';
+import 'dart:async';
+
+abstract class IUserService {
+  Future<User> connect(User user);
+
+  Future<List<User>> online();
+
+  Future<void> disconnect(User user);
+}
