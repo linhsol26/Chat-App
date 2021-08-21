@@ -1,9 +1,9 @@
 class User {
-  String userName;
-  String photoUrl;
+  final String userName;
+  final String photoUrl;
   late String _id;
-  bool active;
-  DateTime lastSeen;
+  final bool active;
+  final DateTime lastSeen;
 
   String get id => _id;
 
