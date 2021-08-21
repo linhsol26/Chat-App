@@ -16,8 +16,8 @@ class TypingNotificationsService implements ITypingNofiticationsService {
   StreamSubscription? _streamSubscriptionChangeFeed;
 
   @override
-  Future<bool> send({required TypingEvent event, required User to}) async {
-    if (!to.active) return false;
+  Future<bool> send({required TypingEvent event, User? to}) async {
+    if (!to!.active) return false;
     Map record = await rethinkdb
         .table('typing_events')
         .insert(event.toJson(), {'conflict': 'update'}).run(connection);
