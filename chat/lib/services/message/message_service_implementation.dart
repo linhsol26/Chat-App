@@ -2,17 +2,23 @@ import 'dart:async';
 
 import 'package:chat/models/user.dart';
 import 'package:chat/models/message.dart';
+import 'package:chat/services/encryption/encryption_service_contract.dart';
 import 'package:chat/services/message/message_service_contract.dart';
 import 'package:rethinkdb_dart/rethinkdb_dart.dart';
 
 class MessageService implements IMessageService {
   final Connection connection;
   final Rethinkdb rethinkdb;
+  final IEncryptionService encryption;
 
-  MessageService({required this.connection, required this.rethinkdb});
+  MessageService(
+      {required this.connection,
+      required this.rethinkdb,
+      required this.encryption});
 
   final _controller = StreamController<Message>.broadcast();
   StreamSubscription? _streamSubscriptionChangeFeed;
+
   @override
   dispose() {
     _streamSubscriptionChangeFeed?.cancel();
@@ -55,15 +61,17 @@ class MessageService implements IMessageService {
   }
 
   Message _messageFromFeed(feedData) {
-    return Message.fromJson(feedData['new_val']);
+    var data = feedData['new_val'];
+    data['contents'] = encryption.decrypt(data['contents']);
+    return Message.fromJson(data);
   }
 
   @override
   Future<bool> send(Message message) async {
-    Map record = await rethinkdb
-        .table('messages')
-        .insert(message.toJson())
-        .run(connection);
+    var data = message.toJson();
+    data['contents'] = encryption.encrypt(message.contents);
+    print(data['contents']);
+    Map record = await rethinkdb.table('messages').insert(data).run(connection);
     return record['inserted'] == 1;
   }
 }

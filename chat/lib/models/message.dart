@@ -18,7 +18,7 @@ class Message {
         'from': this.from,
         'to': this.to,
         'timeStamp': this.timeStamp,
-        'content': this.contents
+        'contents': this.contents
       };
 
   factory Message.fromJson(Map<String, dynamic> json) {

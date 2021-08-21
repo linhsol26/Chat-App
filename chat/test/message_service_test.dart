@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:chat/models/message.dart';
 import 'package:chat/models/user.dart';
+import 'package:chat/services/encryption/encryption_service_implement.dart';
 import 'package:chat/services/message/message_service_implementation.dart';
+import 'package:encrypt/encrypt.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rethinkdb_dart/rethinkdb_dart.dart';
 
@@ -16,9 +18,10 @@ void main() {
 
   setUp(() async {
     connection = await rethinkdb.connect(host: "127.0.0.1", port: 28015);
+    final encryption = EncryptionService(Encrypter(AES(Key.fromLength(32))));
     await createDb(rethinkdb, connection);
-    messageService =
-        MessageService(connection: connection, rethinkdb: rethinkdb);
+    messageService = MessageService(
+        connection: connection, rethinkdb: rethinkdb, encryption: encryption);
   });
 
   tearDown(() async {
