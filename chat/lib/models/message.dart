@@ -17,7 +17,7 @@ class Message {
   toJson() => {
         'from': this.from,
         'to': this.to,
-        'timeStamp': this.timeStamp,
+        'timestamp': this.timeStamp,
         'contents': this.contents
       };
 
@@ -25,7 +25,7 @@ class Message {
     var message = Message(
         from: json['from'],
         to: json['to'],
-        timeStamp: json['timeStamp'],
+        timeStamp: json['timestamp'],
         contents: json['contents']);
 
     message._id = json['id'];
