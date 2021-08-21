@@ -45,7 +45,7 @@ void main() {
     Message message = Message(
         from: user.id,
         to: '3456',
-        timeStamp: DateTime.now(),
+        timestamp: DateTime.now(),
         contents: 'This is a message.');
     final res = await messageService.send(message);
     expect(res, true);
@@ -60,13 +60,13 @@ void main() {
     Message message = Message(
         from: user.id,
         to: user1.id,
-        timeStamp: DateTime.now(),
+        timestamp: DateTime.now(),
         contents: 'This is first message from 1 to 2.');
 
     Message secondMessage = Message(
         from: user.id,
         to: user1.id,
-        timeStamp: DateTime.now(),
+        timestamp: DateTime.now(),
         contents: 'This is second message from 1 to 2.');
 
     await messageService.send(message);
@@ -77,13 +77,13 @@ void main() {
     Message message = Message(
         from: user.id,
         to: user1.id,
-        timeStamp: DateTime.now(),
+        timestamp: DateTime.now(),
         contents: 'This is first message from 1 to 2.');
 
     Message secondMessage = Message(
         from: user.id,
         to: user1.id,
-        timeStamp: DateTime.now(),
+        timestamp: DateTime.now(),
         contents: 'This is second message from 1 to 2.');
 
     await messageService.send(message);

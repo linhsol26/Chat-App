@@ -1,7 +1,7 @@
 class Message {
   final String from;
   final String to;
-  final DateTime timeStamp;
+  final DateTime timestamp;
   final String contents;
   late String _id;
 
@@ -10,14 +10,14 @@ class Message {
   Message({
     required this.from,
     required this.to,
-    required this.timeStamp,
+    required this.timestamp,
     required this.contents,
   });
 
   toJson() => {
         'from': this.from,
         'to': this.to,
-        'timestamp': this.timeStamp,
+        'timestamp': this.timestamp,
         'contents': this.contents
       };
 
@@ -25,7 +25,7 @@ class Message {
     var message = Message(
         from: json['from'],
         to: json['to'],
-        timeStamp: json['timestamp'],
+        timestamp: json['timestamp'],
         contents: json['contents']);
 
     message._id = json['id'];
