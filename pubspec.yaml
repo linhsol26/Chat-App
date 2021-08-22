@@ -30,9 +30,9 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^7.1.0
   flutter_svg: ^0.22.0
-  google_fonts: null
-  http: null
-  image_picker: null
+  google_fonts: ^1.1.2
+  http: ^0.12.2
+  image_picker: ^0.6.3
   rethinkdb_dart: ^2.3.2+6
   shared_preferences: ^2.0.6
   sqflite: ^2.0.0+3

@@ -1,8 +1,11 @@
+import 'package:chat_app/cubit/onboarding/onboarding_cubit.dart';
+import 'package:chat_app/cubit/profile_image/profile_image_cubit.dart';
 import 'package:chat_app/utils/colors.dart';
 import 'package:chat_app/view/widgets/onboarding/logo.dart';
 import 'package:chat_app/view/widgets/onboarding/profile_upload.dart';
 import 'package:chat_app/view/widgets/shared/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({Key? key}) : super(key: key);
@@ -12,6 +15,8 @@ class Onboarding extends StatefulWidget {
 }
 
 class _OnboardingState extends State<Onboarding> {
+  String _userName = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,14 +38,29 @@ class _OnboardingState extends State<Onboarding> {
                 child: CustomTextField(
                   hint: 'What is your name?',
                   inputAction: TextInputAction.done,
-                  onChanged: (String val) {},
+                  onChanged: (String val) {
+                    _userName = val;
+                  },
                 ),
               ),
               SizedBox(height: 30.0),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (_userName.isEmpty) {
+                      final snackBar = SnackBar(
+                          content: Text('Enter your name.',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                              )));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      return;
+                    }
+
+                    await _connectSession();
+                  },
                   child: Container(
                     height: 45.0,
                     alignment: Alignment.center,
@@ -60,7 +80,14 @@ class _OnboardingState extends State<Onboarding> {
                           borderRadius: BorderRadius.circular(45.0))),
                 ),
               ),
-              Spacer(flex: 2),
+              Spacer(),
+              BlocBuilder<OnboardingCubit, OnboardingState>(
+                  builder: (context, state) => state is OnboardingLoading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Container()),
+              Spacer(flex: 1),
             ],
           ),
         ),
@@ -84,5 +111,10 @@ class _OnboardingState extends State<Onboarding> {
         ),
       ],
     );
+  }
+
+  _connectSession() async {
+    final profileImage = context.read<ProfileImageCubit>().state;
+    await context.read<OnboardingCubit>().connect(_userName, profileImage);
   }
 }
