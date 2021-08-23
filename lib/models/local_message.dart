@@ -18,16 +18,19 @@ class LocalMessage {
   Map<String, dynamic> toMap() => {
         'chat_id': this.chatId,
         'id': this.message.id,
-        ...message.toJson(),
-        'receipt': this.receipt.value()
+        'sender': message.from,
+        'receiver': message.to,
+        'contents': message.contents,
+        'receipt': this.receipt.value(),
+        'received_at': message.timestamp,
       };
 
   factory LocalMessage.fromMap(Map<String, dynamic> json) {
     final message = Message(
       contents: json['contents'],
-      from: json['from'],
-      timestamp: json['timestamp'],
-      to: json['to'],
+      from: json['sender'],
+      timestamp: json['received_at'],
+      to: json['receiver'],
     );
 
     final localMessage = LocalMessage(
